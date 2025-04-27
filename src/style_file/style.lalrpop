@@ -1,0 +1,113 @@
+use std::str::FromStr;
+use std::collections::HashMap;
+use crate::style_file::ast;
+
+grammar;
+
+pub Style: ast::Style = {
+    <m:Meta> <l:Layer+> => ast::Style{ meta: m, layers: l }
+};
+
+Meta: ast::Meta = {
+    "FORMAT" <w:Num> <h:Num>
+    "DPI" <dpi:Num>
+    "SCALE 1:" <scale:Num>
+    "CENTER" <x:Num> <y:Num> => ast::Meta {
+        format: (w, h),
+        dpi: dpi,
+        scale: scale,
+        center: (x * 1e7, y * 1e7)
+    }
+}
+
+Layer: ast::Layer = {
+    <n:r"\[[^]]+\]"> <c:Command+> => ast::Layer {
+        name: n[1..n.len()-1].to_string(),
+        commands: c
+    },
+};
+
+Command: ast::Command = {
+    "@take" <n:Num> => ast::Command::Take(n as usize),
+    "@" <t:FilterType> <e:FilterExpr> => ast::Command::Filter(t, e),
+    <fname:Ident> "{" <args:FuncArgs> "}" => ast::Command::DrawFunc { ty: fname.to_string(), args: args },
+    "@sub" "{" <c:Command+> "}" => ast::Command::Sub(c),
+    "@patch_text" <key:Ident> "{" <args:PatchTextArgs> "}" => ast::Command::OffsetText { key: key.to_string(), offsets: args },
+}
+
+FuncArgs: HashMap<String, ast::FuncArg> = {
+    <a:FuncArg> => { let mut m = HashMap::new(); m.insert(a.0, a.1); m },
+    <a:FuncArgs> "," <b:FuncArg> => { let mut m = a; m.insert(b.0, b.1); m },
+}
+
+FuncArg: (String, ast::FuncArg) = {
+    <k:Ident> ":" <v:FuncArgValue> => (k, v),
+}
+
+FuncArgValue: ast::FuncArg = {
+    <s:Str> => ast::FuncArg::String(s),
+    Num => ast::FuncArg::Float(<>),
+    r"#[0-9a-fA-F]{6}" => ast::FuncArg::Color(ast::Color::new(<>)),
+    "@random_color" => ast::FuncArg::RandomColor,
+}
+
+PatchTextArgs: HashMap<String, ast::TextPatch> = {
+    <a:PatchTextArg> => { let mut m = HashMap::new(); m.insert(a.0, a.1); m },
+    <a:PatchTextArgs> "," <b:PatchTextArg> => { let mut m = a; m.insert(b.0, b.1); m },
+}
+
+PatchTextArg: (String, ast::TextPatch) = {
+    <k:Str> ":" "{" <v:PatchTextPatches> "}" => (k, v),
+}
+
+PatchTextPatches: ast::TextPatch = {
+    <a:PatchTextPatch> => a,
+    <a:PatchTextPatches> <b:PatchTextPatch> => a.merge(b),
+}
+
+PatchTextPatch: ast::TextPatch = {
+    "offset" <x:Num> "/" <y:Num> => ast::TextPatch { offset: Some((x, y)), rename: None, scale: None },
+    "rename" <to:Str> => ast::TextPatch { offset: None, rename: Some(to), scale: None },
+    "scale" <s:Num> => ast::TextPatch { offset: None, rename: None, scale: Some(s) },
+}
+
+FilterType: ast::FilterType = {
+    "keep" => ast::FilterType::Keep,
+    "remove" => ast::FilterType::Remove,
+}
+
+FilterExprReset: ast::FilterExpr = {
+    FilterExpr => <>
+}
+
+FilterExpr: ast::FilterExpr = {
+    #[precedence(level="0")] // Highest precedence
+    "(" <a:FilterExprReset> ")" => a,
+    Filter => ast::FilterExpr::Filter(<>),
+    #[precedence(level="1")]
+    "not" <a:FilterExpr> => ast::FilterExpr::Not(Box::new(a)),
+    #[precedence(level="2")] #[assoc(side="left")]
+    <a:FilterExpr> "and" <b:FilterExpr> => ast::FilterExpr::And(Box::new(a), Box::new(b)),
+    #[precedence(level="3")] #[assoc(side="left")]
+    <a:FilterExpr> "or" <b:FilterExpr> => ast::FilterExpr::Or(Box::new(a), Box::new(b)),
+}
+
+Filter: ast::Filter = {
+    <a:Ident> "=" <b:Str> => ast::Filter::Match(a, b),
+    ".node" => ast::Filter::IsNode,
+    ".way" => ast::Filter::IsWay,
+    ".relation" => ast::Filter::IsRelation,
+    ".role" "=" <r:Str> => ast::Filter::MatchRole(r),
+}
+
+Str: String = {
+    <s:r#""[^"]*""#> => s[1..s.len()-1].replace("\\n", "\n").to_string()
+};
+
+Num: f64 = {
+    r"-?[0-9.]+" => f64::from_str(<>).unwrap()
+};
+
+Ident: String = {
+    r"[a-zA-Z_]+" => <>.to_string()
+};

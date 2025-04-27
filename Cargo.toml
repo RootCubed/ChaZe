@@ -1,0 +1,23 @@
+[package]
+name = "chaze"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bimap = "0.6.3"
+cairo-rs = { version = "0.20.7", features = ["png", "svg"] }
+clap = { version = "4.5.28", features = ["derive"] }
+env_logger = "0.11.6"
+flate2 = "1.0.35"
+lalrpop-util = { version = "0.22.1", features = ["lexer", "unicode"] }
+pangocairo = "0.20.7"
+pango = { version = "0.20.7", features = ["v1_44"] }
+png = "0.17.16"
+prost = "0.13.4"
+rand = "0.9.0"
+regex = "1.11.1"
+svg = "0.18.0"
+
+[build-dependencies]
+lalrpop = "0.22.1"
+prost-build = "0.13.4"
