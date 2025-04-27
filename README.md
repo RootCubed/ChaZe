@@ -1,6 +1,6 @@
-# OSM Toolkit
+# ChaZe - a map rendering engine for OpenStreetMap data
 
-OSM Toolkit is a command-line tool for rendering maps from OpenStreetMap PBF files using customizable style files. It generates high-quality PNG images based on the provided OSM data and style configuration.
+ChaZe is a command-line tool for rendering maps from OpenStreetMap PBF files using customizable style files. It generates high-quality PNG images based on the provided OSM data and style configuration.
 
 ## Features
 
@@ -27,13 +27,13 @@ cargo build --release
 To render a map, provide an OSM PBF file and a style file. The default output file is `output.png`.
 
 ```pwsh
-.target\release\osm_toolkit.exe --input <your.osm.pbf> --style-file <your_style.chz>
+.target\release\chaze.exe --input <your.osm.pbf> --style-file <your_style.chz>
 ```
 
 Or specify an output file name:
 
 ```pwsh
-.target\release\osm_toolkit.exe --input <your.osm.pbf> --style-file <your_style.chz> --output <output.png>
+.target\release\chaze.exe --input <your.osm.pbf> --style-file <your_style.chz> --output <output.png>
 ```
 
 ## Style Files
