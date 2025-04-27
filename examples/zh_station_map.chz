@@ -1,0 +1,326 @@
+FORMAT 297 420
+DPI 600
+SCALE 1:150000
+CENTER 47.41 8.66
+[Grundfarbe]
+    @keep boundary="*"
+    @remove boundary="historic"
+    @keep admin_level="8"
+    Polyfill {
+        color: #f5ebc5,
+        alpha: 1
+    }
+[Gemeinden]
+    @keep boundary="*"
+    @remove boundary="historic"
+    @keep admin_level="8"
+    Polyfill {
+        color: @random_color,
+        alpha: 0.7
+    }
+    Outline {
+        width: 0.3,
+        color: #bc15ae,
+        alpha: 0.6
+    }
+[Seen]
+    @keep water="lake" or water="river"
+    Polyfill {
+        color: #97b0f6
+    }
+[Flüsse]
+    @keep waterway="river"
+    Outline {
+        color: #97b0f6,
+        width: 0.2
+    }
+[Zonen]
+    @keep landuse="residential" or landuse="industrial"
+    Polyfill {
+        color:#807b77,
+        alpha: 0.2
+    }
+[Waldgebiete 1]
+    @keep landuse="forest"
+    Polyfill {
+        color: #068216,
+        alpha: 0.1
+    }
+[Waldgebiete 2]
+    @keep natural="wood"
+    Polyfill {
+        color: #54d167,
+        alpha: 0.1
+    }
+[Hauptstrassen]
+    @keep highway="*"
+    @keep highway="primary"
+    Outline {
+        width: 0.2,
+        color: #9e9e9e,
+        alpha: 0.5
+    }
+[Strassen]
+    @keep highway="*"
+    @keep highway="secondary" or highway="tertiary" or highway="residential"
+    Outline {
+        width: 0.01,
+        color: #000000
+    }
+[Autobahnen und -strassen]
+    @keep highway="motorway" or highway="trunk" or highway="motorway_link" or highway="trunk_link"
+    Outline {
+        width: 0.3,
+        color: #146c0c,
+        alpha: 0.7
+    }
+[Gleise]
+    @keep type="route" and (route="train" or route="light_rail")
+    @keep ref="S*"
+    @remove ref="25"
+    Outline {
+        width: 1.2,
+        color: #fcf81f
+    }
+    Outline {
+        width: 0.3,
+        color: #000000
+    }
+[Bezirke]
+    @keep boundary="*"
+    @remove boundary="historic"
+    @keep admin_level="6"
+    Outline {
+        width: 0.5,
+        color: #c90e30,
+        alpha: 0.6
+    }
+[Kantone]
+    @keep boundary="*"
+    @remove boundary="historic"
+    @keep admin_level="4"
+    Outline {
+        width: 2.5,
+        color: #1ea851,
+        alpha: 0.3
+    }
+[ZVV-Bahnhöfe]
+    @keep public_transport="stop_area" or public_transport="stop_position"
+    @keep network="*ZVV*"
+    @keep .relation
+    @sub {
+        @keep .role="stop"
+        @keep train="yes" or light_rail="yes"
+        @take 1
+        @remove name="Dietikon AVA"
+        @remove name="Römerhof"
+        @remove name="Titlisstrasse"
+        @remove name="Waldhaus Dolder"
+        @remove name="Bergstation Dolderbahn"
+        @remove name="Zürich Hauptbahnhof SZU"
+        @remove name="Bahnhof Stadelhofen"
+        @patch_text name {
+            "Hinwil": { offset 0 / 3 },
+            "Wetzikon ZH": { offset -8.5 / 0 },
+            "Kempten": { offset 7 / 0 },
+            "Aathal": { offset 5.5 / 0 },
+            "Bubikon": { offset -6 / 0 },
+            "Tann-Dürnten": { offset 0 / -3 },
+            "Rüti ZH": { offset 6 / 0 },
+            "Wald ZH": { offset 0 / 3 },
+            "Gibswil": { offset 6 / 0 },
+            "Fischenthal": { offset 8 / 0 },
+            "Steg": { offset 4.5 / 0 },
+            "Bauma": { offset 0 / -3 },
+            "Saland": { offset 6 / 0 },
+            "Wila": { offset 4.5 / -1 },
+            "Turbenthal": { offset 7.5 / 0 },
+            "Rämismühle-Zell": { offset 8 / -3 },
+            "Rikon": { offset 4 / -2.5 },
+            "Kollbrunn": { offset 4.5 / -3.5 },
+            "Sennhof-Kyburg": { offset -10 / 0 },
+            "Winterthur Seen": { offset 11.5 / 0 },
+            "Winterthur Grüze": { offset -4 / 3 },
+            "Winterthur Hegi": { offset 7.5 / -3 },
+            "Räterschen": { offset 0 / 3 },
+            "Schottikon": { offset 6 / 2.5 },
+            "Elgg": { offset 0 / 3 },
+            "Oberwinterthur": { offset -8 / -3 },
+            "Winterthur Wallrüti": { offset -12 / 0 },
+            "Reutlingen": { offset -7.5 / 0 },
+            "Seuzach": { offset 5.5 / -2.5 },
+            "Dinhard": { offset 6 / 0 },
+            "Thalheim-Altikon": { offset -11 / 0 },
+            "Ossingen": { offset 0 / -3 },
+            "Stammheim": { offset 8 / 0 },
+            "Wiesendangen": { offset 10 / 0 },
+            "Rickenbach-Attikon": { offset -1 / -3.5 },
+            "Winterthur": { offset -7.5 / 0 },
+            "Winterthur Wülflingen": { rename "Winterthur\nWülflingen" offset -8 / 1 },
+            "Pfungen": { offset 0 / -3 },
+            "Embrach-Rorbas": { offset 0 / -3 },
+            "Bülach": { offset 4 / -3 },
+            "Glattfelden": { offset 7.5 / 0 },
+            "Eglisau": { offset -5.5 / 1.5 },
+            "Zweidlen": { offset 5.5 / 3 },
+            "Kaiserstuhl AG": { offset 7 / -4. },
+            "Hüntwangen-Wil": { offset 10.5 / 0 },
+            "Rafz": { offset 3 / 2.5 },
+            "Dachsen": { offset 6.5 / 0 },
+            "Schloss Laufen am Rheinfall": { rename "Schloss Laufen a. R." offset 9 / 2.5 },
+            "Marthalen": { offset 7 / 0 },
+            "Andelfingen": { offset -3 / -3.5 },
+            "Henggart": { offset -7 / 0 },
+            "Hettlingen": { offset 7.5 / 0 },
+            "Winterthur Töss": { offset -9 / 2.5 },
+            "Kemptthal": { offset -7.5 / 0 },
+            "Effretikon": { offset -7 / 0 },
+            "Illnau": { offset 5 / 0 },
+            "Fehraltorf": { offset 7 / 0 },
+            "Pfäffikon ZH": { offset 8 / 0 },
+            "Kempten": { offset 6.5 / 0 },
+            "Uster": { offset -5 / 0 },
+            "Nänikon-Greifensee": { offset 12 / 0 },
+            "Schwerzenbach ZH": { offset -12.5 / 0 },
+            "Dübendorf": { offset 7.5 / 0 },
+            "Wallisellen": { offset 0 / -3 },
+            "Zürich Oerlikon": { offset 7 / 3 },
+            "Zürich Seebach": { offset -3.5 / -3 },
+            "Opfikon": { offset 6 / 0 },
+            "Glattbrugg": { offset -7.5 / 1 },
+            "Zürich Flughafen": { offset 0 / -3 },
+            "Kloten": { offset 3.5 / -3 },
+            "Kloten Balsberg": { offset 10 / 0 },
+            "Bassersdorf": { offset 3.5 / -3 },
+            "Dietlikon": { offset 6.5 / 0 },
+            "Stettbach": { offset 7 / 0 },
+            "Rümlang": { offset -6.5 / 0 },
+            "Oberglatt ZH": { offset 9 / 0 },
+            "Niederglatt ZH": { offset 9.5 / 0 },
+            "Niederhasli": { offset -4.5 / 3 },
+            "Dielsdorf": { offset 7 / 0 },
+            "Steinmaur": { offset 0 / -3 },
+            "Schöfflisdorf-Oberweningen": { offset 16.5 / -1 },
+            "Niederweningen Dorf": { offset 13 / -1 },
+            "Niederweningen": { offset 10.5 / -1 },
+            "Zürich Affoltern": { offset 0 / 4 },
+            "Regensdorf-Watt": { offset 10.5 / 0 },
+            "Buchs-Dällikon": { offset 0 / -3 },
+            "Otelfingen Golfpark": { offset 1 / -4 },
+            "Otelfingen": { offset 6 / 3.5 },
+            "Blumenau": { offset 7 / -2 },
+            "Jona": { offset 4.5 / 0 },
+            "Rapperswil SG": { offset -10 / 0 },
+            "Kempraten": { offset 0 / -3 },
+            "Feldbach": { offset 0 / -3 },
+            "Uerikon": { offset 0 / -3 },
+            "Stäfa": { offset 0 / -3 },
+            "Männedorf": { offset 6 / -3 },
+            "Uetikon am See": { offset 6 / -3 },
+            "Meilen": { offset 0 / -3 },
+            "Herrliberg-Feldmeilen": { offset 13 / 0 },
+            "Winkel am Zürichsee": { offset 13 / 0 },
+            "Erlenbach ZH": { offset 9 / 0 },
+            "Küsnacht ZH": { offset 9 / 0 },
+            "Küsnacht Goldbach": { offset 12 / 0 },
+            "Zollikon": { offset 6 / 0 },
+            "Hurden": { offset 5.5 / 1.5 },
+            "Pfäffikon SZ": { offset 0 / -3 },
+            "Freienbach SBB": { offset 0 / -3 },
+            "Schindellegi-Feusisberg": { offset 14.5 / 0 },
+            "Samstagern": { offset -8 / 0 },
+            "Grüenfeld": { offset -7.5 / 0 },
+            "Burghalden": { offset -8 / 0 },
+            "Richterswil": { offset 6.5 / -3 },
+            "Bäch SZ": { offset -1.5 / -3 },
+            "Riedmatt SZ": { offset -3 / 3 },
+            "Wollerau": { offset 2 / 3 },
+            "Wilen bei Wollerau": { offset 10.5 / 2.5 },
+            "Freienbach SOB": { offset 1 / 4 },
+            "Wädenswil": { offset -7.5 / 0 },
+            "Au ZH": { offset -4.5 / 2 },
+            "Horgen": { offset 5 / -2.5 },
+            "Horgen Oberdorf": { offset -11 / 0 },
+            "Oberrieden": { offset 7.5 / 0 },
+            "Oberrieden Dorf": { rename "Ober-\nrieden\nDorf" offset -5 / 0 },
+            "Thalwil": { offset -6 / 0 },
+            "Rüschlikon": { offset 7.5 / 0 },
+            "Kilchberg": { offset 7 / 0 },
+            "Sihlwald": { offset -6.5 / 0 },
+            "Langnau-Gattikon": { offset -11 / 0 },
+            "Wildpark-Höfli": { offset -9.5 / 0 },
+            "Sihlau": { offset -5 / 0 },
+            "Adliswil": { offset -6 / 0 },
+            "Sood-Oberleimbach": { offset -12 / 0 },
+            "Zürich Leimbach": { offset -10.5 / 0 },
+            "Zürich Manegg": { offset -9.5 / 0 },
+            "Knonau": { offset 6 / 0 },
+            "Mettmenstetten": { offset 10 / 0 },
+            "Affoltern am Albis": { offset 11 / 0 },
+            "Hedingen": { offset 7 / 0 },
+            "Bonstetten-Wettswil": { offset 12.5 / 0 },
+            "Birmensdorf ZH": { offset -10 / 0 },
+            "Urdorf Weihermatt": { offset 11.5 / 0 },
+            "Urdorf": { offset 5 / 1.5 },
+            "Dietikon": { offset 6.5 / 0 },
+            "Schlieren": { offset 0 / -3 },
+            "Glanzenberg": { offset 0 / 3 },
+            "Schöneggstrasse": { offset -10 / 0 },
+            "Bergfrieden": { offset -7.5 / 0 },
+            "Dietikon Stoffelbach": { rename "Stoffelbach" offset -8.5 / 0 },
+            "Reppischhof": { offset -8 / 0 },
+            "Esslingen": { offset -7.5 / 0 },
+            "Emmat": { offset -6 / 0 },
+            "Langwies": { offset -7 / 0 },
+            "Egg": { offset -4 / 0 },
+            "Hinteregg": { offset -7 / 0 },
+            "Neuhaus": { offset 7 / 0 },
+            "Scheuren": { offset 7.5 / 0 },
+            "Forch": { offset 4.5 / -2 },
+            "Neue Forch": { offset -2 / 3 },
+            "Maiacher": { offset 6 / -2 },
+            "Zumikon": { offset 6 / -1.5 },
+            "Waltikon": { offset 6 / -1.5 },
+            "Zollikerberg": { offset 8 / 0 },
+            "Spital Zollikerberg": { offset 7 / -3 },
+            "Waldburg": { offset -3 / 2.5 },
+            "Rehalp": { offset 4.5 / -2.5 },
+            "Balgrist": { offset 5 / -2.5 },
+            "Uetliberg": { scale -0.2 offset -2 / 4 },
+            "Ringlikon": { scale -0.2 offset -5.5 / 0 },
+            "Kreuzplatz": { scale -0.2 offset 6.5 / 0 },
+            "Hegibachplatz": { scale -0.2 offset 7.5 / 0 },
+            "Uitikon Waldegg": { rename "Uitikon\nWaldegg" scale -0.2 offset -5.5 / -1.5 },
+            "Zürich Altstetten": { rename "Altstetten" offset 1.5 / -3 },
+            "Zürich Hardbrücke": { rename "Hardbrücke" offset -6.5 / 2.5 },
+            "Zürich Hauptbahnhof": { rename "Zürich HB" offset 1 / -4 },
+            "Zürich Wipkingen": { rename "Wipkingen" scale -0.2 offset 4.5 / 2.5 },
+            "Zürich Wiedikon": { rename "Wiedikon" scale -0.2 offset -6 / -1.5 },
+            "Zürich Triemli": { rename "Triemli" scale -0.2 offset -1 / -3 },
+            "Zürich Schweighof": { rename "Schweighof" scale -0.2 offset -2 / 3 },
+            "Zürich Friesenberg": { rename "Friesen-\nberg" scale -0.2 offset 0 / -3.5 },
+            "Zürich Enge": { rename "Enge" scale -0.2 offset 2.5 / -2.5 },
+            "Zürich Stadelhofen": { rename "Stadel-\nhofen" offset 3.5 / -3.5 },
+            "Zürich Tiefenbrunnen": { rename "Tiefen-\nbrunnen" offset -6 / -2.5 },
+            "Zürich Wollishofen": { rename "Wollishofen" offset 7.5 / 2 },
+            "Zürich Selnau": { rename "Selnau" scale -0.2 offset 4.5 / 0 },
+            "Zürich Giesshübel": { rename "Giesshübel" scale -0.2 offset 5.8 / 1.3 },
+            "Zürich Saalsporthalle": { rename "Saalsporthalle" scale -0.2 offset -7 / 1 },
+            "Zürich Binz": { rename "Binz" scale -0.2 offset -2.5 / 2 },
+            "Zürich Brunau": { rename "Brunau" offset -6.5 / 0 }
+        }
+        Dot {
+            radius: 1.3,
+            color: #000000
+        }
+        Dot {
+            radius: 1,
+            color: #ffffff
+        }
+        Text {
+            font_family: "Neue Frutiger World",
+            size: 1.6,
+            color: #000000,
+            field: "name"
+        }
+    }
